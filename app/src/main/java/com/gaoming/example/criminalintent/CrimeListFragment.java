@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by gaoming on 2017/5/17.
@@ -21,19 +22,26 @@ import java.util.List;
 public class CrimeListFragment extends Fragment {
     private RecyclerView mCrimeRecyclerView;
     private CrimeAdapter mAdapter;
+    private final static int REQUEST_CRIME = 1;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_crime_list,container,false);
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_crime_list, container, false);
         mCrimeRecyclerView = (RecyclerView) view.findViewById(R.id.crime_recycler_view);
         mCrimeRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         updateUI();
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateUI();
+    }
+
     private class CrimeHolder extends RecyclerView.ViewHolder
-            implements View.OnClickListener{
+            implements View.OnClickListener {
 
         private TextView mTitleTextView;
         private TextView mDateTextView;
@@ -51,7 +59,7 @@ public class CrimeListFragment extends Fragment {
                     itemView.findViewById(R.id.list_item_crime_solved_check_box);
         }
 
-        public void bindCrime (Crime crime){
+        public void bindCrime(Crime crime) {
             mCrime = crime;
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEEE, MMM dd, yyyy");
             String sDate = simpleDateFormat.format(crime.getDate());
@@ -63,22 +71,22 @@ public class CrimeListFragment extends Fragment {
         @Override
         public void onClick(View v) {
             Intent intent = CrimeActivity.newIntent(getActivity(), mCrime.getId());
-            startActivity(intent);
+            startActivityForResult(intent,REQUEST_CRIME);
         }
     }
 
-    private class CrimeAdapter extends RecyclerView.Adapter<CrimeHolder>{
+    private class CrimeAdapter extends RecyclerView.Adapter<CrimeHolder> {
 
         private List<Crime> mCrimes;
 
-        public CrimeAdapter(List<Crime> crimes){
+        public CrimeAdapter(List<Crime> crimes) {
             mCrimes = crimes;
         }
 
         @Override
         public CrimeHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
-            View view = layoutInflater.inflate(R.layout.list_item_crime,parent,false);
+            View view = layoutInflater.inflate(R.layout.list_item_crime, parent, false);
             return new CrimeHolder(view);
         }
 
@@ -94,10 +102,21 @@ public class CrimeListFragment extends Fragment {
         }
     }
 
-    private void updateUI(){
+    private void updateUI() {
         CrimeLab crimeLab = CrimeLab.get(getActivity());
         List<Crime> crimes = crimeLab.getmCrimes();
-        mAdapter = new CrimeAdapter(crimes);
-        mCrimeRecyclerView.setAdapter(mAdapter);
+        if (mAdapter == null) {
+            mAdapter = new CrimeAdapter(crimes);
+            mCrimeRecyclerView.setAdapter(mAdapter);
+        }else {
+            mAdapter.notifyDataSetChanged();
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_CRIME){
+
+        }
     }
 }
