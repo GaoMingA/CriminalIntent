@@ -13,7 +13,6 @@ import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * Created by gaoming on 2017/5/17.
@@ -70,8 +69,8 @@ public class CrimeListFragment extends Fragment {
 
         @Override
         public void onClick(View v) {
-            Intent intent = CrimeActivity.newIntent(getActivity(), mCrime.getId());
-            startActivityForResult(intent,REQUEST_CRIME);
+            Intent intent = CrimePaperActivity.newInent(getActivity(), mCrime.getId());
+            startActivityForResult(intent, REQUEST_CRIME);
         }
     }
 
@@ -108,14 +107,14 @@ public class CrimeListFragment extends Fragment {
         if (mAdapter == null) {
             mAdapter = new CrimeAdapter(crimes);
             mCrimeRecyclerView.setAdapter(mAdapter);
-        }else {
+        } else {
             mAdapter.notifyDataSetChanged();
         }
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_CRIME){
+        if (requestCode == REQUEST_CRIME) {
 
         }
     }
