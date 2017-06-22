@@ -65,7 +65,7 @@ public class CrimeLab {
         );
 
         try {
-            if (cursor.getCount() == 0){
+            if (cursor.getCount() == 0) {
                 return null;
             }
             cursor.moveToFirst();
@@ -90,6 +90,7 @@ public class CrimeLab {
         values.put(CrimeTable.Cols.TITLE, crime.getTitle());
         values.put(CrimeTable.Cols.DATE, crime.getDate().getTime());
         values.put(CrimeTable.Cols.SOLVED, crime.isSolved() ? 1 : 0);
+        values.put(CrimeTable.Cols.SUSPECT, crime.getSuspect());
         return values;
     }
 
