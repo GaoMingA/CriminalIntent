@@ -55,6 +55,10 @@ public class Crime {
         return mSuspect;
     }
 
+    public String getPhotoFilename() {
+        return "IMG_" + getId().toString() + ".jpg";
+    }
+
     public void setSuspect(String mSuspect) {
         this.mSuspect = mSuspect;
     }
